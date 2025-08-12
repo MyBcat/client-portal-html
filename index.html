@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBcat Portal - Demo Homepage</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .demo-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 16px;
+            padding: 48px;
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .demo-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            font-size: 36px;
+        }
+        
+        .demo-header p {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+        
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .role-card {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .role-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .role-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .role-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .role-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .role-badge.internal {
+            background: #2563eb20;
+            color: var(--primary-color);
+        }
+        
+        .role-badge.client {
+            background: #10b98120;
+            color: var(--success-color);
+        }
+        
+        .role-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            min-height: 48px;
+        }
+        
+        .role-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        
+        .role-features li {
+            padding: 8px 0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .role-features li::before {
+            content: '✓';
+            color: var(--success-color);
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        .role-features li.restricted::before {
+            content: '✗';
+            color: var(--danger-color);
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .login-button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .demo-credentials {
+            background: var(--background);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+        
+        .demo-credentials code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        .comparison-section {
+            margin-top: 48px;
+            padding-top: 48px;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+        
+        .comparison-table th {
+            background: var(--background);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .comparison-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .comparison-table .check {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+        
+        .comparison-table .cross {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+        
+        .comparison-table .partial {
+            color: var(--warning-color);
+            font-weight: bold;
+        }
+        
+        .tech-note {
+            background: #f59e0b10;
+            border-left: 4px solid var(--warning-color);
+            padding: 16px;
+            margin-top: 32px;
+            border-radius: 4px;
+        }
+        
+        .tech-note h4 {
+            color: var(--warning-color);
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-card">
+            <div class="demo-header">
+                <h1>MyBcat Client Portal - Demo</h1>
+                <p>Select a role to explore the portal with appropriate permissions and views</p>
+            </div>
+            
+            <div class="role-grid">
+                <!-- Admin Role -->
+                <div class="role-card" onclick="loginAs('admin')">
+                    <div class="role-header">
+                        <span class="role-title">System Admin</span>
+                        <span class="role-badge internal">Internal</span>
+                    </div>
+                    <p class="role-description">Full system access with all features and permissions</p>
+                    <ul class="role-features">
+                        <li>Complete access to all clients</li>
+                        <li>User management across system</li>
+                        <li>Financial data access</li>
+                        <li>System configuration</li>
+                        <li>All reporting features</li>
+                        <li>Queue/Supervisor/Agent filtering</li>
+                    </ul>
+                    <button class="login-button">Login as Admin</button>
+                    <div class="demo-credentials">
+                        Demo: <code>admin@mybcat.com</code>
+                    </div>
+                </div>
+                
+                <!-- CSM Role -->
+                <div class="role-card" onclick="loginAs('csm')">
+                    <div class="role-header">
+                        <span class="role-title">Customer Success Manager</span>
+                        <span class="role-badge internal">Internal</span>
+                    </div>
+                    <p class="role-description">Manage client accounts and approve change requests</p>
+                    <ul class="role-features">
+                        <li>Create new client companies</li>
+                        <li>Approve change requests</li>
+                        <li>View all assigned clients</li>
+                        <li>Access client invoices</li>
+                        <li>Monitor automation status</li>
+                        <li>Queue/Supervisor/Agent filtering</li>
+                    </ul>
+                    <button class="login-button">Login as CSM</button>
+                    <div class="demo-credentials">
+                        Demo: <code>csm@mybcat.com</code>
+                    </div>
+                </div>
+                
+                <!-- Supervisor Role -->
+                <div class="role-card" onclick="loginAs('supervisor')">
+                    <div class="role-header">
+                        <span class="role-title">Supervisor</span>
+                        <span class="role-badge internal">Internal</span>
+                    </div>
+                    <p class="role-description">Monitor quality and agent performance</p>
+                    <ul class="role-features">
+                        <li>AI quality scores & coaching</li>
+                        <li>Incomplete appointment analysis</li>
+                        <li>Agent performance metrics</li>
+                        <li>Team productivity reports</li>
+                        <li>Call monitoring & review</li>
+                        <li>Queue/Agent filtering</li>
+                    </ul>
+                    <button class="login-button">Login as Supervisor</button>
+                    <div class="demo-credentials">
+                        Demo: <code>supervisor@mybcat.com</code>
+                    </div>
+                </div>
+                
+                <!-- Client Admin Role -->
+                <div class="role-card" onclick="loginAs('client-admin')">
+                    <div class="role-header">
+                        <span class="role-title">Client Admin</span>
+                        <span class="role-badge client">Client</span>
+                    </div>
+                    <p class="role-description">Full access to your company's data and settings</p>
+                    <ul class="role-features">
+                        <li>View all company metrics</li>
+                        <li>Listen to call recordings</li>
+                        <li>Request setting changes</li>
+                        <li>View invoices & billing</li>
+                        <li>Manage company users</li>
+                        <li class="restricted">No queue/agent filtering</li>
+                    </ul>
+                    <button class="login-button">Login as Client Admin</button>
+                    <div class="demo-credentials">
+                        Demo: <code>admin@acmeeyecare.com</code>
+                    </div>
+                </div>
+                
+                <!-- Client User Role -->
+                <div class="role-card" onclick="loginAs('client-user')">
+                    <div class="role-header">
+                        <span class="role-title">Client User</span>
+                        <span class="role-badge client">Client</span>
+                    </div>
+                    <p class="role-description">View reports and basic call information</p>
+                    <ul class="role-features">
+                        <li>View call logs</li>
+                        <li>Access basic reports</li>
+                        <li>Listen to recordings (if permitted)</li>
+                        <li class="restricted">No financial data</li>
+                        <li class="restricted">No user management</li>
+                        <li class="restricted">No queue/agent filtering</li>
+                    </ul>
+                    <button class="login-button">Login as Client User</button>
+                    <div class="demo-credentials">
+                        Demo: <code>user@acmeeyecare.com</code>
+                    </div>
+                </div>
+                
+                <!-- Agent Role -->
+                <div class="role-card" onclick="loginAs('agent')">
+                    <div class="role-header">
+                        <span class="role-title">Agent</span>
+                        <span class="role-badge internal">Internal</span>
+                    </div>
+                    <p class="role-description">View assigned calls and personal performance</p>
+                    <ul class="role-features">
+                        <li>View own call history</li>
+                        <li>Personal performance metrics</li>
+                        <li>AI coaching feedback</li>
+                        <li class="restricted">Only assigned client data</li>
+                        <li class="restricted">No financial data</li>
+                        <li class="restricted">No admin features</li>
+                    </ul>
+                    <button class="login-button">Login as Agent</button>
+                    <div class="demo-credentials">
+                        Demo: <code>agent@mybcat.com</code>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-section">
+                <h2>Feature Access by Role</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Admin</th>
+                            <th>CSM</th>
+                            <th>Supervisor</th>
+                            <th>Client Admin</th>
+                            <th>Client User</th>
+                            <th>Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Dashboard & Analytics</strong></td>
+                            <td class="check">✓ All</td>
+                            <td class="check">✓ All</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="partial">○ Own</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Queue/Agent Filtering</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Call Recordings</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="partial">○ If allowed</td>
+                            <td class="partial">○ Own</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AI Scores & Coaching</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="partial">○ Own</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Incomplete Appt Analysis</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Productivity by Queue</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Financial/Invoices</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓ View</td>
+                            <td class="cross">✗</td>
+                            <td class="check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Create Support Tickets</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Request Setting Changes</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓ Approve</td>
+                            <td class="cross">✗</td>
+                            <td class="check">✓ Request</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td><strong>User Management</strong></td>
+                            <td class="check">✓ All</td>
+                            <td class="check">✓ Clients</td>
+                            <td class="cross">✗</td>
+                            <td class="check">✓ Own</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Create Companies</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Automation Dashboard</strong></td>
+                            <td class="check">✓</td>
+                            <td class="check">✓</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                            <td class="cross">✗</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tech-note">
+                <h4>Technical Implementation Notes</h4>
+                <p><strong>Authentication:</strong> AWS Cognito with MFA for Admin/Client Admin roles</p>
+                <p><strong>Permissions:</strong> Role-based access control (RBAC) enforced at API level</p>
+                <p><strong>Data Isolation:</strong> Client users only see their own company data</p>
+                <p><strong>Compliance:</strong> HIPAA-compliant with full audit logging</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function loginAs(role) {
+            // Store the selected role
+            localStorage.setItem('demoRole', role);
+            localStorage.setItem('hasCompletedOnboarding', 'false');
+            
+            // Set role-specific data
+            const roleData = {
+                'admin': {
+                    name: 'Admin User',
+                    email: 'admin@mybcat.com',
+                    company: 'MyBcat',
+                    canSeeAllClients: true,
+                    canFilterQueues: true
+                },
+                'csm': {
+                    name: 'Sarah Johnson',
+                    email: 'csm@mybcat.com',
+                    company: 'MyBcat',
+                    canSeeAllClients: true,
+                    canFilterQueues: true,
+                    hasApprovals: true
+                },
+                'supervisor': {
+                    name: 'Mike Chen',
+                    email: 'supervisor@mybcat.com',
+                    company: 'MyBcat',
+                    canFilterQueues: true,
+                    canSeeIncompleteAppts: true
+                },
+                'client-admin': {
+                    name: 'John Doe',
+                    email: 'admin@acmeeyecare.com',
+                    company: 'Acme Eye Care',
+                    canSeeAllClients: false,
+                    canFilterQueues: false,
+                    canRequestChanges: true
+                },
+                'client-user': {
+                    name: 'Jane Smith',
+                    email: 'user@acmeeyecare.com',
+                    company: 'Acme Eye Care',
+                    canSeeAllClients: false,
+                    canFilterQueues: false,
+                    limitedAccess: true
+                },
+                'agent': {
+                    name: 'Emma Wilson',
+                    email: 'agent@mybcat.com',
+                    company: 'MyBcat',
+                    canSeeAllClients: false,
+                    canFilterQueues: false,
+                    ownDataOnly: true
+                }
+            };
+            
+            localStorage.setItem('demoUserData', JSON.stringify(roleData[role]));
+            
+            // Redirect to dashboard for all roles
+            // (Onboarding is only for CSMs creating new clients, accessed separately)
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

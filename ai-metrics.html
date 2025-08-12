@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Performance Metrics - MyBcat Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .metrics-container {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 32px;
+            background: var(--background);
+            min-height: 100vh;
+        }
+        
+        .metrics-header {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-bar.client-view {
+            /* Hide queue/agent filters for client roles */
+        }
+        
+        .filter-bar.client-view .internal-only {
+            display: none;
+        }
+        
+        .date-range {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .gauge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .gauge-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .gauge-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        .gauge-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+        }
+        
+        .gauge-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        
+        .gauge-background {
+            fill: none;
+            stroke: #e2e8f0;
+            stroke-width: 15;
+        }
+        
+        .gauge-fill {
+            fill: none;
+            stroke-width: 15;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.5s ease;
+        }
+        
+        .gauge-fill.green {
+            stroke: #10b981;
+        }
+        
+        .gauge-fill.yellow {
+            stroke: #f59e0b;
+        }
+        
+        .gauge-fill.red {
+            stroke: #ef4444;
+        }
+        
+        .gauge-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: 700;
+        }
+        
+        .gauge-value.green {
+            color: #10b981;
+        }
+        
+        .gauge-value.yellow {
+            color: #f59e0b;
+        }
+        
+        .gauge-value.red {
+            color: #ef4444;
+        }
+        
+        .metric-sections {
+            display: grid;
+            gap: 24px;
+        }
+        
+        .metric-section {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .productivity-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .productivity-table th {
+            background: var(--background);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+        
+        .productivity-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .productivity-table .clickable {
+            cursor: pointer;
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+        
+        .incomplete-analysis {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+        }
+        
+        .reason-breakdown {
+            background: var(--background);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .reason-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .agent-breakdown {
+            background: var(--background);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .heatmap-container {
+            overflow-x: auto;
+        }
+        
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr);
+            gap: 2px;
+            min-width: 800px;
+        }
+        
+        .heatmap-header {
+            padding: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+            background: var(--background);
+        }
+        
+        .heatmap-time {
+            padding: 8px;
+            font-size: 11px;
+            text-align: right;
+            background: var(--background);
+        }
+        
+        .heatmap-cell {
+            padding: 8px;
+            text-align: center;
+            font-size: 11px;
+            color: white;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .heatmap-cell.low {
+            background: #bbf7d0;
+            color: var(--text-primary);
+        }
+        
+        .heatmap-cell.medium {
+            background: #fbbf24;
+            color: var(--text-primary);
+        }
+        
+        .heatmap-cell.high {
+            background: #f87171;
+        }
+        
+        .heatmap-cell.very-high {
+            background: #dc2626;
+        }
+        
+        .role-notice {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: 4px;
+        }
+        
+        .role-notice.client {
+            background: #dbeafe;
+            border-left-color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>MyBcat Portal</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="dashboard.html#dashboard" class="nav-link">
+                    <span class="icon">📊</span> Dashboard
+                </a></li>
+                <li><a href="dashboard.html#calls" class="nav-link">
+                    <span class="icon">📞</span> Calls
+                </a></li>
+                <li><a href="dashboard.html#reports" class="nav-link">
+                    <span class="icon">📈</span> Reports
+                </a></li>
+                <li><a href="ai-metrics.html" class="nav-link active">
+                    <span class="icon">🎯</span> AI Metrics
+                </a></li>
+                <li class="financial-access"><a href="dashboard.html#invoices" class="nav-link">
+                    <span class="icon">💳</span> Invoices
+                </a></li>
+                <li class="user-management"><a href="dashboard.html#users" class="nav-link">
+                    <span class="icon">👥</span> Users
+                </a></li>
+                <li class="admin-only"><a href="dashboard.html#integrations" class="nav-link">
+                    <span class="icon">🔗</span> Integrations
+                </a></li>
+                <li class="internal-only"><a href="dashboard.html#analytics" class="nav-link">
+                    <span class="icon">📊</span> Advanced Analytics
+                </a></li>
+                <li class="supervisor-only"><a href="dashboard.html#approvals" class="nav-link">
+                    <span class="icon">✅</span> Approvals
+                </a></li>
+                <li class="csm-only"><a href="dashboard.html#company-setup" class="nav-link">
+                    <span class="icon">🏢</span> Company Setup
+                </a></li>
+                <li class="csm-only"><a href="dashboard.html#automation" class="nav-link">
+                    <span class="icon">🤖</span> Automation
+                </a></li>
+                <li class="settings-access"><a href="dashboard.html#settings" class="nav-link">
+                    <span class="icon">⚙️</span> Settings
+                </a></li>
+            </ul>
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar">JD</div>
+                <div class="user-details">
+                    <p class="user-name" id="user-name">John Doe</p>
+                    <p class="user-role" id="user-role">Client Admin</p>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+                <button class="btn btn-outline" style="width: 100%; margin-top: 8px;" onclick="switchRole()">
+                    🔄 Switch Role
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <div class="metrics-container">
+        <div class="metrics-header">
+            <h1>AI Performance Metrics Dashboard</h1>
+            <p id="role-display" style="color: var(--text-secondary);"></p>
+        </div>
+        
+        <!-- Role-specific notice -->
+        <div id="role-notice" class="role-notice" style="display: none;">
+            <strong>Note:</strong> <span id="notice-text"></span>
+        </div>
+        
+        <!-- Filter Bar -->
+        <div id="filter-bar" class="filter-bar">
+            <div class="date-range">
+                <label>Date Range:</label>
+                <input type="date" id="start-date" value="2025-01-01">
+                <span>to</span>
+                <input type="date" id="end-date" value="2025-01-11">
+            </div>
+            
+            <!-- These filters only show for internal roles -->
+            <div class="internal-only">
+                <label>Queue:</label>
+                <select id="queue-filter">
+                    <option value="all">CVC</option>
+                    <option value="main">Limestone</option>
+                    <option value="billing">Emerald</option>
+                    <option value="appointments">Leesburg</option>
+                </select>
+            </div>
+            
+            <div class="internal-only">
+                <label>Supervisor:</label>
+                <select id="supervisor-filter">
+                    <option value="all">All Supervisors</option>
+                    <option value="mike">Mike Chen</option>
+                    <option value="sarah">Sarah Johnson</option>
+                </select>
+            </div>
+            
+            <div class="internal-only">
+                <label>Agent:</label>
+                <select id="agent-filter">
+                    <option value="all">All Agents</option>
+                    <option value="emma">Emma Wilson</option>
+                    <option value="john">John Smith</option>
+                    <option value="jane">Jane Doe</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-primary">Apply Filters</button>
+            <button class="btn btn-secondary">Reset</button>
+        </div>
+        
+        <!-- AI Performance Gauges -->
+        <div class="metric-section">
+            <h2 class="section-title">AI-Scored Performance Metrics</h2>
+            <div class="gauge-grid">
+                <!-- Positive Language (Patient) -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Positive Language (Patient)</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                    stroke-dasharray="339 377"></circle>
+                        </svg>
+                        <div class="gauge-value green">90%</div>
+                    </div>
+                </div>
+                
+                <!-- Positive Language (Agent) -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Positive Language (Agent)</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                    stroke-dasharray="320 377"></circle>
+                        </svg>
+                        <div class="gauge-value green">85%</div>
+                    </div>
+                </div>
+                
+                <!-- Clarity -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Clarity</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                    stroke-dasharray="332 377"></circle>
+                        </svg>
+                        <div class="gauge-value green">88%</div>
+                    </div>
+                </div>
+                
+                <!-- Problem Solving -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Problem Solving</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
+                                    stroke-dasharray="279 377"></circle>
+                        </svg>
+                        <div class="gauge-value yellow">74%</div>
+                    </div>
+                </div>
+                
+                <!-- Professionalism -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Professionalism</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                    stroke-dasharray="347 377"></circle>
+                        </svg>
+                        <div class="gauge-value green">92%</div>
+                    </div>
+                </div>
+                
+                <!-- Interruptions (Lower is Better) -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Interruptions ↓</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                    stroke-dasharray="60 377"></circle>
+                        </svg>
+                        <div class="gauge-value green">15%</div>
+                    </div>
+                </div>
+                
+                <!-- Appointments Made -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Appointments Made</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
+                                    stroke-dasharray="264 377"></circle>
+                        </svg>
+                        <div class="gauge-value yellow">70%</div>
+                    </div>
+                </div>
+                
+                <!-- Conversions -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Conversions</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
+                                    stroke-dasharray="249 377"></circle>
+                        </svg>
+                        <div class="gauge-value yellow">66%</div>
+                    </div>
+                </div>
+                
+                <!-- Social Proof -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Social Proof</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                    stroke-dasharray="302 377"></circle>
+                        </svg>
+                        <div class="gauge-value green">80%</div>
+                    </div>
+                </div>
+                
+                <!-- Benefits Aligned -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Benefits Aligned</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
+                                    stroke-dasharray="287 377"></circle>
+                        </svg>
+                        <div class="gauge-value yellow">76%</div>
+                    </div>
+                </div>
+                
+                <!-- Guided Choice -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Guided Choice</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                    stroke-dasharray="309 377"></circle>
+                        </svg>
+                        <div class="gauge-value green">82%</div>
+                    </div>
+                </div>
+                
+                <!-- Patient Felt Heard -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Patient Felt Heard</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                    stroke-dasharray="332 377"></circle>
+                        </svg>
+                        <div class="gauge-value green">88%</div>
+                    </div>
+                </div>
+                
+                <!-- WOW Score -->
+                <div class="gauge-card">
+                    <div class="gauge-title">⭐ WOW Score</div>
+                    <div class="gauge-container">
+                        <svg class="gauge-svg">
+                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                    stroke-dasharray="324 377"></circle>
+                        </svg>
+                        <div class="gauge-value green">86%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Productivity Metrics by Queue (Internal Only) -->
+        <div id="productivity-section" class="metric-section">
+            <h2 class="section-title">Productivity Metrics by Queue</h2>
+            <table class="productivity-table">
+                <thead>
+                    <tr>
+                        <th>Queue Name</th>
+                        <th>Answer Rate</th>
+                        <th>Answered</th>
+                        <th>Total Calls</th>
+                        <th>Quality Score</th>
+                        <th>SOP Score</th>
+                        <th>Productivity</th>
+                        <th>Appt Requests</th>
+                        <th>Appts Made</th>
+                        <th>Conversion %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="clickable">CVC</td>
+                        <td>92%</td>
+                        <td>456</td>
+                        <td>495</td>
+                        <td><span class="badge success">88%</span></td>
+                        <td><span class="badge success">91%</span></td>
+                        <td><span class="badge success">85%</span></td>
+                        <td>234</td>
+                        <td>187</td>
+                        <td><span class="badge warning">79.9%</span></td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">Limestone</td>
+                        <td>95%</td>
+                        <td>142</td>
+                        <td>150</td>
+                        <td><span class="badge success">92%</span></td>
+                        <td><span class="badge success">94%</span></td>
+                        <td><span class="badge success">90%</span></td>
+                        <td>45</td>
+                        <td>41</td>
+                        <td><span class="badge success">91.1%</span></td>
+                    </tr>
+                    <tr>
+                        <td class="clickable">Emerald</td>
+                        <td>88%</td>
+                        <td>312</td>
+                        <td>355</td>
+                        <td><span class="badge warning">75%</span></td>
+                        <td><span class="badge warning">78%</span></td>
+                        <td><span class="badge warning">72%</span></td>
+                        <td>298</td>
+                        <td>198</td>
+                        <td><span class="badge warning">66.4%</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Incomplete Appointment Analysis (Supervisor Only) -->
+        <div id="incomplete-section" class="metric-section" style="display: none;">
+            <h2 class="section-title">Incomplete Appointment Analysis</h2>
+            <div class="incomplete-analysis">
+                <div class="reason-breakdown">
+                    <h3>Reasons for Not Booking</h3>
+                    <div class="reason-item">
+                        <span>Patient Not Ready</span>
+                        <strong>34%</strong>
+                    </div>
+                    <div class="reason-item">
+                        <span>Insurance Issues</span>
+                        <strong>28%</strong>
+                    </div>
+                    <div class="reason-item">
+                        <span>Schedule Conflict</span>
+                        <strong>22%</strong>
+                    </div>
+                    <div class="reason-item">
+                        <span>Price Concerns</span>
+                        <strong>10%</strong>
+                    </div>
+                    <div class="reason-item">
+                        <span>Other</span>
+                        <strong>6%</strong>
+                    </div>
+                </div>
+                <div class="agent-breakdown">
+                    <h3>Agent Performance on Incomplete Appointments</h3>
+                    <table class="productivity-table">
+                        <thead>
+                            <tr>
+                                <th>Agent</th>
+                                <th>Incomplete</th>
+                                <th>Quality Score</th>
+                                <th>Most Common Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Emma Wilson</td>
+                                <td>23</td>
+                                <td><span class="badge warning">72%</span></td>
+                                <td>Insurance Issues</td>
+                            </tr>
+                            <tr>
+                                <td>John Smith</td>
+                                <td>18</td>
+                                <td><span class="badge warning">78%</span></td>
+                                <td>Patient Not Ready</td>
+                            </tr>
+                            <tr>
+                                <td>Jane Doe</td>
+                                <td>15</td>
+                                <td><span class="badge success">81%</span></td>
+                                <td>Schedule Conflict</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 30-Minute Interval Heatmap -->
+        <div class="metric-section">
+            <h2 class="section-title">Call Volume Heatmap (30-Minute Intervals)</h2>
+            <div class="heatmap-container">
+                <div class="heatmap-grid">
+                    <div class="heatmap-header">Time</div>
+                    <div class="heatmap-header">Monday</div>
+                    <div class="heatmap-header">Tuesday</div>
+                    <div class="heatmap-header">Wednesday</div>
+                    <div class="heatmap-header">Thursday</div>
+                    <div class="heatmap-header">Friday</div>
+                    <div class="heatmap-header">Saturday</div>
+                    <div class="heatmap-header">Sunday</div>
+                    
+                    <!-- 8:00 AM -->
+                    <div class="heatmap-time">8:00 AM</div>
+                    <div class="heatmap-cell medium" title="15 calls">15</div>
+                    <div class="heatmap-cell medium" title="18 calls">18</div>
+                    <div class="heatmap-cell high" title="22 calls">22</div>
+                    <div class="heatmap-cell medium" title="19 calls">19</div>
+                    <div class="heatmap-cell medium" title="17 calls">17</div>
+                    <div class="heatmap-cell low" title="5 calls">5</div>
+                    <div class="heatmap-cell low" title="0 calls">-</div>
+                    
+                    <!-- 8:30 AM -->
+                    <div class="heatmap-time">8:30 AM</div>
+                    <div class="heatmap-cell high" title="25 calls">25</div>
+                    <div class="heatmap-cell high" title="28 calls">28</div>
+                    <div class="heatmap-cell very-high" title="35 calls">35</div>
+                    <div class="heatmap-cell high" title="30 calls">30</div>
+                    <div class="heatmap-cell high" title="27 calls">27</div>
+                    <div class="heatmap-cell low" title="8 calls">8</div>
+                    <div class="heatmap-cell low" title="0 calls">-</div>
+                    
+                    <!-- 9:00 AM -->
+                    <div class="heatmap-time">9:00 AM</div>
+                    <div class="heatmap-cell very-high" title="42 calls">42</div>
+                    <div class="heatmap-cell very-high" title="45 calls">45</div>
+                    <div class="heatmap-cell very-high" title="48 calls">48</div>
+                    <div class="heatmap-cell very-high" title="44 calls">44</div>
+                    <div class="heatmap-cell very-high" title="40 calls">40</div>
+                    <div class="heatmap-cell medium" title="12 calls">12</div>
+                    <div class="heatmap-cell low" title="0 calls">-</div>
+                    
+                    <!-- Continue for more time slots... -->
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 20px; justify-content: center;">
+                <span><span style="display: inline-block; width: 20px; height: 20px; background: #bbf7d0; border-radius: 4px;"></span> Low (0-10)</span>
+                <span><span style="display: inline-block; width: 20px; height: 20px; background: #fbbf24; border-radius: 4px;"></span> Medium (11-20)</span>
+                <span><span style="display: inline-block; width: 20px; height: 20px; background: #f87171; border-radius: 4px;"></span> High (21-30)</span>
+                <span><span style="display: inline-block; width: 20px; height: 20px; background: #dc2626; border-radius: 4px;"></span> Very High (30+)</span>
+            </div>
+        </div>
+        </div> <!-- End metrics-container -->
+    </div> <!-- End container -->
+    
+    <script>
+        // Navigation functions
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+        
+        function switchRole() {
+            if (confirm('This will take you back to role selection. Continue?')) {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Check user role and adjust display
+        const userData = JSON.parse(localStorage.getItem('demoUserData') || '{}');
+        const role = localStorage.getItem('demoRole') || 'client-admin';
+        
+        // Update user info in sidebar
+        document.getElementById('user-name').textContent = userData.name || 'John Doe';
+        document.getElementById('user-role').textContent = role.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+        
+        // Update avatar initials
+        if (userData.name) {
+            const initials = userData.name.split(' ').map(n => n[0]).join('');
+            document.getElementById('user-avatar').textContent = initials;
+        }
+        
+        // Display current role
+        document.getElementById('role-display').textContent = `Logged in as: ${userData.name || 'User'} (${role})`;
+        
+        // Apply role-based menu visibility
+        if (role === 'client-admin') {
+            document.querySelectorAll('.internal-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.csm-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.supervisor-only').forEach(el => el.style.display = 'none');
+        } else if (role === 'client-user') {
+            document.querySelectorAll('.internal-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.csm-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.supervisor-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.financial-access').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.user-management').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.settings-access').forEach(el => el.style.display = 'none');
+        } else if (role === 'agent') {
+            document.querySelectorAll('.internal-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.csm-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.supervisor-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.financial-access').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.user-management').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.settings-access').forEach(el => el.style.display = 'none');
+        } else if (role === 'supervisor') {
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.csm-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.financial-access').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.settings-access').forEach(el => el.style.display = 'none');
+        } else if (role === 'csm') {
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.supervisor-only').forEach(el => el.style.display = 'block');
+        }
+        
+        // Role-based UI adjustments for metrics
+        if (role === 'client-admin' || role === 'client-user') {
+            // Hide internal-only filters
+            document.getElementById('filter-bar').classList.add('client-view');
+            
+            // Hide productivity section for clients
+            document.getElementById('productivity-section').style.display = 'none';
+            
+            // Show client notice
+            document.getElementById('role-notice').style.display = 'block';
+            document.getElementById('role-notice').classList.add('client');
+            document.getElementById('notice-text').textContent = 
+                'As a client user, you see aggregated metrics for your company. Queue and agent filtering is not available.';
+        }
+        
+        // Show incomplete appointment analysis only for supervisors
+        if (role === 'supervisor' || role === 'admin' || role === 'csm') {
+            document.getElementById('incomplete-section').style.display = 'block';
+        }
+        
+        // For agents, show only their own data
+        if (role === 'agent') {
+            document.getElementById('role-notice').style.display = 'block';
+            document.getElementById('notice-text').textContent = 
+                'As an agent, you see only your personal performance metrics.';
+            // Hide queue filtering
+            document.getElementById('productivity-section').style.display = 'none';
+        }
+        
+        // Gauge animation function
+        function setGaugeValue(element, value) {
+            const circumference = 2 * Math.PI * 60; // radius = 60
+            const offset = circumference - (value / 100) * circumference;
+            element.style.strokeDasharray = `${circumference - offset} ${circumference}`;
+        }
+        
+        // Initialize all gauges
+        document.querySelectorAll('.gauge-card').forEach(card => {
+            const valueElement = card.querySelector('.gauge-value');
+            const value = parseInt(valueElement.textContent);
+            const fillElement = card.querySelector('.gauge-fill');
+            
+            // Set color based on value
+            if (value >= 80) {
+                fillElement.classList.add('green');
+                valueElement.classList.add('green');
+            } else if (value >= 60) {
+                fillElement.classList.add('yellow');
+                valueElement.classList.add('yellow');
+            } else {
+                fillElement.classList.add('red');
+                valueElement.classList.add('red');
+            }
+            
+            // Animate gauge
+            setTimeout(() => setGaugeValue(fillElement, value), 100);
+        });
+    </script>
+</body>
+</html>

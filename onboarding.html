@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBcat Portal - New Client Setup Guide</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .onboarding-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .onboarding-card {
+            background: white;
+            border-radius: 16px;
+            padding: 48px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .onboarding-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .onboarding-header h1 {
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+        
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .step-circle.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .step-circle.completed {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+        
+        .step-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .onboarding-content {
+            min-height: 400px;
+        }
+        
+        .onboarding-step {
+            display: none;
+        }
+        
+        .onboarding-step.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+        
+        .tour-highlight {
+            position: relative;
+            padding: 20px;
+            background: var(--background);
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .tour-highlight::before {
+            content: '💡';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: white;
+            padding: 0 8px;
+            font-size: 20px;
+        }
+        
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .checklist li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .checklist input[type="checkbox"] {
+            margin-right: 12px;
+        }
+        
+        .onboarding-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .skip-btn {
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        .setup-form {
+            max-width: 600px;
+        }
+        
+        .setup-form h3 {
+            color: var(--primary-color);
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        
+        .setup-form h3:first-child {
+            margin-top: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .review-section {
+            background: var(--background);
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .review-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .review-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .review-item label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .review-item span {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .workflow-status {
+            margin-top: 16px;
+        }
+        
+        .workflow-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .status-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            text-align: center;
+        }
+        
+        .status-icon.ready {
+            color: #f59e0b;
+        }
+        
+        .status-icon.complete {
+            color: var(--success-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="onboarding-container">
+        <div class="onboarding-card">
+            <div class="onboarding-header">
+                <h1>New Client Setup Wizard</h1>
+                <p>Follow these steps to create and configure a new client company</p>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-step">
+                    <div class="step-circle active" id="step1">1</div>
+                    <span class="step-label">Company Info</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle" id="step2">2</div>
+                    <span class="step-label">Contact Details</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle" id="step3">3</div>
+                    <span class="step-label">Service Config</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle" id="step4">4</div>
+                    <span class="step-label">Automation</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle" id="step5">✓</div>
+                    <span class="step-label">Review</span>
+                </div>
+            </div>
+            
+            <!-- Onboarding Content -->
+            <div class="onboarding-content">
+                <!-- Step 1: Company Information -->
+                <div class="onboarding-step active" id="step1-content">
+                    <h2>Step 1: Company Information</h2>
+                    <p>Let's start by gathering the basic company details for the new client.</p>
+                    
+                    <form class="setup-form">
+                        <div class="form-group">
+                            <label>Company Name *</label>
+                            <input type="text" placeholder="Acme Eye Care" required>
+                        </div>
+                        <div class="form-group">
+                            <label>DBA (Doing Business As)</label>
+                            <input type="text" placeholder="Optional - if different from company name">
+                        </div>
+                        <div class="form-group">
+                            <label>Industry Type *</label>
+                            <select required>
+                                <option>Optometry/Eye Care</option>
+                                <option>Dental</option>
+                                <option>Medical - General</option>
+                                <option>Medical - Specialist</option>
+                                <option>Other Healthcare</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Company Size *</label>
+                            <select required>
+                                <option>1-5 locations</option>
+                                <option>6-10 locations</option>
+                                <option>11-25 locations</option>
+                                <option>26+ locations</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estimated Call Volume *</label>
+                            <select required>
+                                <option>0-50 calls/day</option>
+                                <option>51-100 calls/day</option>
+                                <option>101-250 calls/day</option>
+                                <option>250+ calls/day</option>
+                            </select>
+                        </div>
+                    </form>
+                    
+                    <div class="tour-highlight">
+                        <h3>💡 Pro Tip:</h3>
+                        <p>Accurate company information helps our tech team configure the right infrastructure from the start.</p>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Contact Details -->
+                <div class="onboarding-step" id="step2-content">
+                    <h2>Step 2: Contact Information</h2>
+                    <p>Provide the primary contact and billing information for this client.</p>
+                    
+                    <form class="setup-form">
+                        <h3>Primary Contact</h3>
+                        <div class="form-group">
+                            <label>Contact Name *</label>
+                            <input type="text" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" placeholder="john@acmeeyecare.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone *</label>
+                            <input type="tel" placeholder="(555) 123-4567" required>
+                        </div>
+                        
+                        <h3>Billing Address</h3>
+                        <div class="form-group">
+                            <label>Street Address *</label>
+                            <input type="text" placeholder="123 Main Street" required>
+                        </div>
+                        <div class="form-group">
+                            <label>City *</label>
+                            <input type="text" placeholder="New York" required>
+                        </div>
+                        <div class="form-group">
+                            <label>State *</label>
+                            <select required>
+                                <option>NY</option>
+                                <option>CA</option>
+                                <option>TX</option>
+                                <option>FL</option>
+                                <!-- Add more states -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>ZIP Code *</label>
+                            <input type="text" placeholder="10001" required>
+                        </div>
+                    </form>
+                    
+                    <div class="tour-highlight">
+                        <h3>📧 Important:</h3>
+                        <p>The primary contact will receive all setup notifications and account information.</p>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Service Configuration -->
+                <div class="onboarding-step" id="step3-content">
+                    <h2>Step 3: Service Configuration</h2>
+                    <p>Configure the call center services and operational settings for this client.</p>
+                    
+                    <form class="setup-form">
+                        <h3>Hours of Operation</h3>
+                        <div class="form-group">
+                            <label>Business Hours *</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <input type="time" value="08:00" required>
+                                <input type="time" value="17:00" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Days of Operation *</label>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <label><input type="checkbox" checked> Mon</label>
+                                <label><input type="checkbox" checked> Tue</label>
+                                <label><input type="checkbox" checked> Wed</label>
+                                <label><input type="checkbox" checked> Thu</label>
+                                <label><input type="checkbox" checked> Fri</label>
+                                <label><input type="checkbox"> Sat</label>
+                                <label><input type="checkbox"> Sun</label>
+                            </div>
+                        </div>
+                        
+                        <h3>Phone System Configuration</h3>
+                        <div class="form-group">
+                            <label>Main Phone Number *</label>
+                            <input type="tel" placeholder="(555) 123-4567" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Call Routing Type *</label>
+                            <select required>
+                                <option>Round Robin</option>
+                                <option>Skills-Based</option>
+                                <option>Priority Queue</option>
+                                <option>Custom Rules</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Average Call Volume *</label>
+                            <select required>
+                                <option>0-50 calls/day</option>
+                                <option>51-100 calls/day</option>
+                                <option>101-250 calls/day</option>
+                                <option>250+ calls/day</option>
+                            </select>
+                        </div>
+                        
+                        <h3>After-Hours Settings</h3>
+                        <div class="form-group">
+                            <label>After-Hours Handling *</label>
+                            <select required onchange="toggleAfterHours(this.value)">
+                                <option>Voicemail</option>
+                                <option>Bland AI Agent</option>
+                                <option>Emergency Line</option>
+                                <option>Forward to Mobile</option>
+                            </select>
+                        </div>
+                        <div id="bland-ai-settings" style="display: none;">
+                            <div class="form-group">
+                                <label>Bland AI Voice</label>
+                                <select>
+                                    <option>Professional Female</option>
+                                    <option>Professional Male</option>
+                                    <option>Friendly Female</option>
+                                    <option>Friendly Male</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Max Hold Time</label>
+                                <select>
+                                    <option>30 seconds</option>
+                                    <option>1 minute</option>
+                                    <option>2 minutes</option>
+                                    <option>5 minutes</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="tour-highlight">
+                        <h3>📞 Configuration Notes:</h3>
+                        <p>These settings will be automatically sent to the tech team for Amazon Connect setup. You'll receive a notification when configuration is complete.</p>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Automation Settings -->
+                <div class="onboarding-step" id="step4-content">
+                    <h2>Step 4: Automation & Integrations</h2>
+                    <p>Set up automated workflows and third-party integrations for this client.</p>
+                    
+                    <form class="setup-form">
+                        <h3>HubSpot Integration</h3>
+                        <div class="form-group">
+                            <label>HubSpot Account ID</label>
+                            <input type="text" placeholder="Enter HubSpot Account ID">
+                        </div>
+                        <div class="form-group">
+                            <label>Sync Frequency</label>
+                            <select>
+                                <option>Real-time</option>
+                                <option>Every 15 minutes</option>
+                                <option>Every hour</option>
+                                <option>Daily</option>
+                            </select>
+                        </div>
+                        
+                        <h3>Automated Workflows</h3>
+                        <ul class="checklist">
+                            <li>
+                                <input type="checkbox" id="auto1" checked>
+                                <label for="auto1">
+                                    <strong>Tech Team Notifications</strong><br>
+                                    <small>Automatically notify tech team when new client is created</small>
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="auto2" checked>
+                                <label for="auto2">
+                                    <strong>Amazon Connect Setup</strong><br>
+                                    <small>Trigger automatic phone system configuration</small>
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="auto3">
+                                <label for="auto3">
+                                    <strong>Bland AI Configuration</strong><br>
+                                    <small>Set up after-hours AI agent automatically</small>
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="auto4" checked>
+                                <label for="auto4">
+                                    <strong>Welcome Email</strong><br>
+                                    <small>Send onboarding email to client contacts</small>
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="auto5">
+                                <label for="auto5">
+                                    <strong>Daily Reports</strong><br>
+                                    <small>Enable automated daily performance reports</small>
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="auto6" checked>
+                                <label for="auto6">
+                                    <strong>Billing Setup</strong><br>
+                                    <small>Create billing account and send first invoice</small>
+                                </label>
+                            </li>
+                        </ul>
+                        
+                        <h3>AI Settings</h3>
+                        <div class="form-group">
+                            <label>Enable AI Call Scoring</label>
+                            <select>
+                                <option>Yes - All Calls</option>
+                                <option>Yes - Sample (10%)</option>
+                                <option>No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>SOP Compliance Threshold</label>
+                            <input type="range" min="0" max="100" value="80">
+                            <span>80%</span>
+                        </div>
+                    </form>
+                    
+                    <div class="tour-highlight">
+                        <h3>🤖 Automation Active</h3>
+                        <p>Selected workflows will begin immediately after client creation. The tech team will receive notifications for manual setup tasks.</p>
+                    </div>
+                </div>
+                
+                <!-- Step 5: Review & Submit -->
+                <div class="onboarding-step" id="step5-content">
+                    <h2>Step 5: Review & Submit</h2>
+                    <p>Please review the client configuration before submitting. This will create the client account and trigger all automated workflows.</p>
+                    
+                    <div class="review-section">
+                        <h3>Company Information</h3>
+                        <div class="review-grid">
+                            <div class="review-item">
+                                <label>Company Name:</label>
+                                <span id="review-company">Acme Eye Care</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Industry:</label>
+                                <span id="review-industry">Optometry/Eye Care</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Size:</label>
+                                <span id="review-size">1-5 locations</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Contact:</label>
+                                <span id="review-contact">John Doe</span>
+                            </div>
+                        </div>
+                        
+                        <h3>Service Configuration</h3>
+                        <div class="review-grid">
+                            <div class="review-item">
+                                <label>Business Hours:</label>
+                                <span id="review-hours">Mon-Fri, 8:00 AM - 5:00 PM</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Phone Number:</label>
+                                <span id="review-phone">(555) 123-4567</span>
+                            </div>
+                            <div class="review-item">
+                                <label>After-Hours:</label>
+                                <span id="review-afterhours">Bland AI Agent</span>
+                            </div>
+                            <div class="review-item">
+                                <label>Call Volume:</label>
+                                <span id="review-volume">51-100 calls/day</span>
+                            </div>
+                        </div>
+                        
+                        <h3>Automated Workflows</h3>
+                        <div class="workflow-status">
+                            <div class="workflow-item">
+                                <span class="status-icon ready">⏳</span>
+                                <span>Tech Team Notification - Ready to Send</span>
+                            </div>
+                            <div class="workflow-item">
+                                <span class="status-icon ready">⏳</span>
+                                <span>Amazon Connect Setup - Ready to Trigger</span>
+                            </div>
+                            <div class="workflow-item">
+                                <span class="status-icon ready">⏳</span>
+                                <span>Welcome Email - Ready to Send</span>
+                            </div>
+                            <div class="workflow-item">
+                                <span class="status-icon ready">⏳</span>
+                                <span>Billing Account - Ready to Create</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tour-highlight" style="background: #fef3c7; border-left-color: #f59e0b;">
+                        <h3>⚠️ Important</h3>
+                        <p>Clicking "Create Client" will:</p>
+                        <ul>
+                            <li>Create the client account in the system</li>
+                            <li>Send notifications to the tech team</li>
+                            <li>Trigger all selected automation workflows</li>
+                            <li>Send welcome email to client contacts</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="btn btn-secondary" onclick="previousStep()" style="margin-right: 12px;">← Back to Edit</button>
+                        <button class="btn btn-primary" onclick="createClient()" style="padding: 15px 40px; font-size: 16px;">
+                            ✅ Create Client
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Actions -->
+            <div class="onboarding-actions">
+                <button class="skip-btn" onclick="skipOnboarding()">Cancel Setup</button>
+                <button class="btn btn-outline" onclick="switchRole()">🔄 Switch Role</button>
+                <div>
+                    <button class="btn btn-secondary" id="prev-btn" onclick="previousStep()" style="display: none;">Previous</button>
+                    <button class="btn btn-primary" id="next-btn" onclick="nextStep()">Next →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+        
+        function updateStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.onboarding-step').forEach(s => {
+                s.classList.remove('active');
+            });
+            
+            // Show current step
+            document.getElementById(`step${step}-content`).classList.add('active');
+            
+            // Update progress circles
+            for (let i = 1; i <= totalSteps; i++) {
+                const circle = document.getElementById(`step${i}`);
+                if (i < step) {
+                    circle.classList.remove('active');
+                    circle.classList.add('completed');
+                    circle.innerHTML = '✓';
+                } else if (i === step) {
+                    circle.classList.add('active');
+                    circle.classList.remove('completed');
+                    if (i < totalSteps) {
+                        circle.innerHTML = i;
+                    }
+                } else {
+                    circle.classList.remove('active', 'completed');
+                    if (i < totalSteps) {
+                        circle.innerHTML = i;
+                    }
+                }
+            }
+            
+            // Update buttons
+            document.getElementById('prev-btn').style.display = step > 1 ? 'inline-block' : 'none';
+            document.getElementById('next-btn').style.display = step < totalSteps ? 'inline-block' : 'none';
+            
+            // Update review page if we're on step 5
+            if (step === 5) {
+                updateReviewPage();
+            }
+        }
+        
+        function toggleAfterHours(value) {
+            const blandSettings = document.getElementById('bland-ai-settings');
+            blandSettings.style.display = value === 'Bland AI Agent' ? 'block' : 'none';
+        }
+        
+        function updateReviewPage() {
+            // This would pull from the form values in a real implementation
+            // For demo, using placeholder values
+        }
+        
+        function createClient() {
+            // Show loading state
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Creating Client...';
+            
+            // Simulate client creation
+            setTimeout(() => {
+                // Update workflow status indicators
+                document.querySelectorAll('.status-icon').forEach(icon => {
+                    icon.classList.remove('ready');
+                    icon.classList.add('complete');
+                    icon.innerHTML = '✅';
+                });
+                
+                // Show success message
+                setTimeout(() => {
+                    alert('✅ Client successfully created!\n\nAutomated workflows have been triggered:\n• Tech team has been notified\n• Amazon Connect setup initiated\n• Welcome email sent to client\n• Billing account created');
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                }, 500);
+            }, 2000);
+        }
+        
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateStep(currentStep);
+            }
+        }
+        
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStep(currentStep);
+            }
+        }
+        
+        function selectRole(role) {
+            // Highlight selected role
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.border = '1px solid var(--border-color)';
+            });
+            event.target.closest('.feature-card').style.border = '2px solid var(--primary-color)';
+            
+            // Show role-specific features
+            const roleFeatures = {
+                'client-admin': [
+                    'Full access to all reports and analytics',
+                    'User management and permissions',
+                    'Billing and invoice management',
+                    'Integration configuration',
+                    'Custom dashboard creation'
+                ],
+                'client-user': [
+                    'View reports and call logs',
+                    'Listen to call recordings',
+                    'Access basic analytics',
+                    'View team performance'
+                ],
+                'csm': [
+                    'Create and manage client accounts',
+                    'Configure company settings',
+                    'Monitor automation workflows',
+                    'Access to all client portals',
+                    'Setup status tracking'
+                ],
+                'tech': [
+                    'Receive automated setup notifications',
+                    'Configure Amazon Connect',
+                    'Set up Bland AI agents',
+                    'Monitor system health',
+                    'Integration management'
+                ]
+            };
+            
+            const features = roleFeatures[role];
+            document.getElementById('role-features').innerHTML = features.map(f => `<li>${f}</li>`).join('');
+            document.getElementById('role-specific-info').style.display = 'block';
+            
+            // Enable next button
+            document.getElementById('next-btn').disabled = false;
+        }
+        
+        function updateSetupProgress() {
+            const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+            const checked = document.querySelectorAll('.checklist input[type="checkbox"]:checked');
+            const progress = Math.round((checked.length / checkboxes.length) * 100);
+            
+            document.getElementById('setup-progress').textContent = progress + '%';
+            document.getElementById('setup-bar').style.width = progress + '%';
+            
+            if (progress === 100) {
+                setTimeout(() => {
+                    alert('Great job! You\'ve completed all setup tasks!');
+                }, 500);
+            }
+        }
+        
+        function skipOnboarding() {
+            if (confirm('Are you sure you want to cancel client creation? Any entered data will be lost.')) {
+                window.location.href = 'dashboard.html';
+            }
+        }
+        
+        function switchRole() {
+            if (confirm('This will take you back to role selection. Continue?')) {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        function completeOnboarding() {
+            localStorage.setItem('hasCompletedOnboarding', 'true');
+            localStorage.setItem('onboardingDate', new Date().toISOString());
+            window.location.href = 'dashboard.html';
+        }
+        
+        // Initialize
+        updateStep(1);
+    </script>
+</body>
+</html>

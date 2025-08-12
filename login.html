@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBcat Portal - Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h1>MyBcat Portal</h1>
+                <p>Welcome back! Please login to your account.</p>
+            </div>
+            
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="you@company.com" value="demo@mybcat.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" value="demo123">
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                
+                <div class="login-divider">
+                    <span>or</span>
+                </div>
+                
+                <button type="button" class="btn btn-outline btn-full">
+                    Sign in with Single Sign-On
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Need help? <a href="#">Contact Support</a></p>
+                <p class="security-note">🔒 Secure 256-bit SSL encryption</p>
+                <div style="margin-top: 20px; padding: 16px; background: #e0f2fe; border-radius: 8px; border-left: 4px solid #0284c7;">
+                    <p style="margin: 0 0 8px 0; font-weight: 600; color: #075985;">👋 Demo Mode</p>
+                    <p style="margin: 0 0 8px 0; font-size: 13px; color: #0c4a6e;">Click "Sign In" with any email/password to continue.</p>
+                    <p style="margin: 0; font-size: 12px; color: #0369a1;">
+                        <strong>Role Detection:</strong> Use <code>admin@</code>, <code>csm@</code>, <code>supervisor@</code>, or <code>agent@</code> in email for specific roles.
+                    </p>
+                    <p style="margin: 8px 0 0 0; font-size: 12px;">
+                        Or skip login: <a href="index.html" style="color: #0284c7; font-weight: 600;">Go to Role Selection →</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="login-features">
+            <h2>Your Central Hub for Call Center Excellence</h2>
+            <ul class="feature-list">
+                <li>✓ Real-time call monitoring and analytics</li>
+                <li>✓ Comprehensive reporting dashboard</li>
+                <li>✓ Agent performance tracking</li>
+                <li>✓ Invoice and billing management</li>
+                <li>✓ AI-powered call scoring</li>
+                <li>✓ Seamless integrations with HubSpot</li>
+            </ul>
+            <div class="login-stats">
+                <div class="stat">
+                    <h3>1M+</h3>
+                    <p>Calls Processed</p>
+                </div>
+                <div class="stat">
+                    <h3>99.9%</h3>
+                    <p>Uptime</p>
+                </div>
+                <div class="stat">
+                    <h3>24/7</h3>
+                    <p>Support</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check if user is already logged in
+        window.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('demoRole');
+            if (isLoggedIn) {
+                // User is already logged in, redirect to role selection
+                window.location.href = 'index.html';
+            }
+        });
+        
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            // Get email value to determine role (for demo purposes)
+            const email = (document.getElementById('email').value || 'demo@mybcat.com').toLowerCase();
+            
+            // Demo: Determine role based on email domain or pattern
+            let role = 'client-admin'; // default to client-admin for better demo experience
+            let userName = 'Demo User';
+            
+            if (email.includes('admin@')) {
+                role = 'admin';
+                userName = 'System Admin';
+            } else if (email.includes('csm@')) {
+                role = 'csm';
+                userName = 'CSM Manager';
+            } else if (email.includes('supervisor@')) {
+                role = 'supervisor';
+                userName = 'Team Supervisor';
+            } else if (email.includes('agent@')) {
+                role = 'agent';
+                userName = 'Support Agent';
+            } else if (email.includes('@mybcat.com')) {
+                role = 'admin';
+                userName = 'MyBcat Admin';
+            } else if (email.endsWith('.admin')) {
+                role = 'client-admin';
+                userName = 'Client Admin';
+            } else if (email.includes('client')) {
+                role = 'client-admin';
+                userName = 'Client Administrator';
+            }
+            
+            // Store login info
+            localStorage.setItem('demoRole', role);
+            localStorage.setItem('demoUserData', JSON.stringify({
+                name: userName,
+                email: email,
+                role: role
+            }));
+            
+            // Redirect to role selection page
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
