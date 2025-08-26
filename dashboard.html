@@ -80,39 +80,465 @@
             <section id="dashboard" class="content-section active">
                 <header class="section-header">
                     <h1>Dashboard</h1>
-                    <div class="date-filter">
-                        <select>
-                            <option>Last 7 Days</option>
-                            <option>Last 30 Days</option>
-                            <option>Last Quarter</option>
-                            <option>Custom Range</option>
-                        </select>
+                    <div class="header-filters">
+                        <!-- Filter Checkboxes for Supervisor/Agent/Queue -->
+                        <div class="filter-group">
+                            <div class="filter-section">
+                                <label class="filter-label">Clients:</label>
+                                <div class="checkbox-group" id="client-filters">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="all" checked> All Clients
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="cvc"> Classic Vision Care
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="limestone"> Limestone Eye Care
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="emerald"> Emerald Medical
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="filter-section">
+                                <label class="filter-label">Agents:</label>
+                                <div class="checkbox-group" id="agent-filters">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="all" checked> All Agents
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="sarah"> Sarah Johnson
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="mike"> Mike Chen
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="emma"> Emma Wilson
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="filter-section">
+                                <label class="filter-label">Queues:</label>
+                                <div class="checkbox-group" id="queue-filters">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="all" checked> All Queues
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="appointments"> Appointments
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="support"> Support
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" value="billing"> Billing
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="date-filter">
+                            <select>
+                                <option>Last 7 Days</option>
+                                <option>Last 30 Days</option>
+                                <option>Last Quarter</option>
+                                <option>Custom Range</option>
+                            </select>
+                        </div>
                     </div>
                 </header>
 
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-header">Total Calls</div>
-                        <div class="stat-value">1,247</div>
-                        <div class="stat-change positive">+12% from last period</div>
+                <!-- Big Five Metrics with Time Horizons -->
+                <div class="big-five-metrics">
+                    <!-- Service Level / Answer Rate -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>Service Level / Answer Rate</h3>
+                            <button class="expand-btn" onclick="toggleSubmetrics(this)">▼</button>
+                        </div>
+                        <div class="time-horizons">
+                            <div class="horizon-metric">
+                                <span class="horizon-label">YTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">92%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 92%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">QTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">89%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 89%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">MTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">94%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 94%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">WTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">91%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 91%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submetrics" style="display: none;">
+                            <div class="submetric-item">
+                                <span>Calls Answered < 30s</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Abandoned Rate</span>
+                                <span>3.2%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Average Wait Time</span>
+                                <span>0:23</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-header">Avg Handle Time</div>
-                        <div class="stat-value">4:32</div>
-                        <div class="stat-change negative">+0:45 from last period</div>
+
+                    <!-- Average Handle Time -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>Average Handle Time</h3>
+                            <button class="expand-btn" onclick="toggleSubmetrics(this)">▼</button>
+                        </div>
+                        <div class="time-horizons">
+                            <div class="horizon-metric">
+                                <span class="horizon-label">YTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">4:32</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill warning" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">QTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">4:45</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill warning" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">MTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">4:15</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 82%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">WTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">4:28</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill warning" style="width: 77%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submetrics" style="display: none;">
+                            <div class="submetric-item">
+                                <span>Talk Time</span>
+                                <span>3:45</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>After Call Work</span>
+                                <span>0:47</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Hold Time</span>
+                                <span>0:12</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-header">Service Level</div>
-                        <div class="stat-value">92%</div>
-                        <div class="stat-change positive">+5% from last period</div>
+
+                    <!-- Quality Score -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>Quality Score</h3>
+                            <button class="expand-btn" onclick="toggleSubmetrics(this)">▼</button>
+                        </div>
+                        <div class="time-horizons">
+                            <div class="horizon-metric">
+                                <span class="horizon-label">YTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">88%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">QTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">86%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 86%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">MTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">90%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">WTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">92%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 92%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submetrics" style="display: none;">
+                            <div class="submetric-item">
+                                <span>Call Monitoring Score</span>
+                                <span>91%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Customer Feedback Score</span>
+                                <span>89%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>First Call Resolution</span>
+                                <span>78%</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-header">Customer Satisfaction</div>
-                        <div class="stat-value">4.8/5</div>
-                        <div class="stat-change positive">+0.2 from last period</div>
+
+                    <!-- SOP Score -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>SOP Adherence</h3>
+                            <button class="expand-btn" onclick="toggleSubmetrics(this)">▼</button>
+                        </div>
+                        <div class="time-horizons">
+                            <div class="horizon-metric">
+                                <span class="horizon-label">YTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">85%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill warning" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">QTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">83%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill warning" style="width: 83%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">MTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">87%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 87%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">WTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">89%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 89%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submetrics" style="display: none;">
+                            <div class="submetric-item">
+                                <span>Greeting Compliance</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Information Verification</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Closing Protocol</span>
+                                <span>92%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appointment Conversion -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>Appointment Conversion</h3>
+                            <button class="expand-btn" onclick="toggleSubmetrics(this)">▼</button>
+                        </div>
+                        <div class="time-horizons">
+                            <div class="horizon-metric">
+                                <span class="horizon-label">YTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">72%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill warning" style="width: 72%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">QTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">75%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill warning" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">MTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">78%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">WTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">81%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 81%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submetrics" style="display: none;">
+                            <div class="submetric-item">
+                                <span>Total Appointments</span>
+                                <span>342</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Average per Call</span>
+                                <span>1.3</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Booked Same Day</span>
+                                <span>23%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Booked This Week</span>
+                                <span>45%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Booked Next Week</span>
+                                <span>32%</span>
+                            </div>
+                            <div class="submetric-header">Top Reasons for Not Booking:</div>
+                            <div class="submetric-item">
+                                <span>Insurance Not Accepted</span>
+                                <span>28%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>No Available Times</span>
+                                <span>24%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Patient Will Call Back</span>
+                                <span>18%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WOW Score -->
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>WOW Score</h3>
+                            <button class="expand-btn" onclick="toggleSubmetrics(this)">▼</button>
+                        </div>
+                        <div class="time-horizons">
+                            <div class="horizon-metric">
+                                <span class="horizon-label">YTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">86%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 86%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">QTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">84%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill warning" style="width: 84%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">MTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">88%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="horizon-metric">
+                                <span class="horizon-label">WTD</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-value">90%</div>
+                                    <div class="gauge-bar">
+                                        <div class="gauge-fill success" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submetrics" style="display: none;">
+                            <div class="submetric-item">
+                                <span>Empathy Score</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Active Listening</span>
+                                <span>89%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Problem Solving</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Professionalism</span>
+                                <span>94%</span>
+                            </div>
+                            <div class="submetric-item">
+                                <span>Enthusiasm</span>
+                                <span>87%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Additional Dashboard Charts (Optional) -->
                 <div class="dashboard-grid">
                     <div class="chart-card">
                         <h3>Call Volume Trends</h3>
@@ -2151,6 +2577,64 @@
         
         function downloadTranscript(callId) {
             alert(`Downloading transcript for Call #${callId}...`);
+        }
+        
+        // Toggle submetrics expansion
+        function toggleSubmetrics(button) {
+            const metricCard = button.closest('.metric-card');
+            const submetrics = metricCard.querySelector('.submetrics');
+            
+            if (submetrics.style.display === 'none') {
+                submetrics.style.display = 'block';
+                button.textContent = '▲';
+            } else {
+                submetrics.style.display = 'none';
+                button.textContent = '▼';
+            }
+        }
+        
+        // Handle filter checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle "All" checkbox behavior for each filter group
+            const filterGroups = ['client-filters', 'agent-filters', 'queue-filters'];
+            
+            filterGroups.forEach(groupId => {
+                const group = document.getElementById(groupId);
+                if (group) {
+                    const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+                    const allCheckbox = group.querySelector('input[value="all"]');
+                    
+                    checkboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            if (this.value === 'all' && this.checked) {
+                                // If "All" is checked, uncheck all others
+                                checkboxes.forEach(cb => {
+                                    if (cb !== this) cb.checked = false;
+                                });
+                            } else if (this.value !== 'all' && this.checked) {
+                                // If any specific item is checked, uncheck "All"
+                                if (allCheckbox) allCheckbox.checked = false;
+                            }
+                            
+                            // If nothing is checked, check "All"
+                            const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+                            if (!anyChecked && allCheckbox) {
+                                allCheckbox.checked = true;
+                            }
+                            
+                            // Update dashboard data based on filters (placeholder for actual implementation)
+                            updateDashboardData();
+                        });
+                    });
+                }
+            });
+        });
+        
+        // Placeholder function to update dashboard data based on filters
+        function updateDashboardData() {
+            console.log('Updating dashboard data based on selected filters...');
+            // This would typically make an API call to fetch filtered data
+            // and update the metric values accordingly
         }
     </script>
 </body>
