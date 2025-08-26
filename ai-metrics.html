@@ -150,6 +150,66 @@
             font-weight: 600;
             margin-bottom: 20px;
             color: var(--text-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .section-title:hover {
+            color: var(--primary-color);
+        }
+        
+        .collapse-btn {
+            font-size: 14px;
+            color: var(--text-secondary);
+            transition: transform 0.3s;
+        }
+        
+        .collapse-btn.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .collapsible-content {
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .metrics-category {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .category-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .category-score {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .category-score.green {
+            color: #10b981;
+        }
+        
+        .category-score.yellow {
+            color: #f59e0b;
         }
         
         .productivity-table {
@@ -385,174 +445,200 @@
         
         <!-- AI Performance Gauges -->
         <div class="metric-section">
-            <h2 class="section-title">AI-Scored Performance Metrics</h2>
-            <div class="gauge-grid">
-                <!-- Positive Language (Patient) -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Positive Language (Patient)</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
-                                    stroke-dasharray="339 377"></circle>
-                        </svg>
-                        <div class="gauge-value green">90%</div>
+            <h2 class="section-title" onclick="toggleSection(this)">
+                AI-Scored Performance Metrics
+                <span class="collapse-btn">▼</span>
+            </h2>
+            
+            <!-- WOW Score Metrics Category -->
+            <div class="metrics-category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h3 class="category-title">WOW Score Components</h3>
+                    <div>
+                        <span class="category-score green">86%</span>
+                        <span class="collapse-btn">▼</span>
                     </div>
                 </div>
-                
-                <!-- Positive Language (Agent) -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Positive Language (Agent)</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
-                                    stroke-dasharray="320 377"></circle>
-                        </svg>
-                        <div class="gauge-value green">85%</div>
+                <div class="gauge-grid collapsible-content">
+                    <!-- Positive Language (Patient) -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Positive Language (Patient)</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                        stroke-dasharray="339 377"></circle>
+                            </svg>
+                            <div class="gauge-value green">90%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Positive Language (Agent) -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Positive Language (Agent)</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                        stroke-dasharray="320 377"></circle>
+                            </svg>
+                            <div class="gauge-value green">85%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Clarity -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Clarity</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                        stroke-dasharray="332 377"></circle>
+                            </svg>
+                            <div class="gauge-value green">88%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Problem Solving -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Problem Solving</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
+                                        stroke-dasharray="279 377"></circle>
+                            </svg>
+                            <div class="gauge-value yellow">74%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Professionalism -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Professionalism</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                        stroke-dasharray="347 377"></circle>
+                            </svg>
+                            <div class="gauge-value green">92%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Patient Felt Heard -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Patient Felt Heard</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                        stroke-dasharray="332 377"></circle>
+                            </svg>
+                            <div class="gauge-value green">88%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Interruptions (Lower is Better) -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Interruptions ↓</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                        stroke-dasharray="60 377"></circle>
+                            </svg>
+                            <div class="gauge-value green">15%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- WOW Score -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">⭐ Overall WOW Score</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                        stroke-dasharray="324 377"></circle>
+                            </svg>
+                            <div class="gauge-value green">86%</div>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Clarity -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Clarity</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
-                                    stroke-dasharray="332 377"></circle>
-                        </svg>
-                        <div class="gauge-value green">88%</div>
+            </div>
+            
+            <!-- Appointment Metrics Category -->
+            <div class="metrics-category">
+                <div class="category-header" onclick="toggleCategory(this)">
+                    <h3 class="category-title">Appointment Conversion Metrics</h3>
+                    <div>
+                        <span class="category-score yellow">72%</span>
+                        <span class="collapse-btn">▼</span>
                     </div>
                 </div>
-                
-                <!-- Problem Solving -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Problem Solving</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
-                                    stroke-dasharray="279 377"></circle>
-                        </svg>
-                        <div class="gauge-value yellow">74%</div>
+                <div class="gauge-grid collapsible-content">
+                    <!-- Appointments Made -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Appointments Made</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
+                                        stroke-dasharray="264 377"></circle>
+                            </svg>
+                            <div class="gauge-value yellow">70%</div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Professionalism -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Professionalism</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
-                                    stroke-dasharray="347 377"></circle>
-                        </svg>
-                        <div class="gauge-value green">92%</div>
+                    
+                    <!-- Conversions -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Conversions</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
+                                        stroke-dasharray="249 377"></circle>
+                            </svg>
+                            <div class="gauge-value yellow">66%</div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Interruptions (Lower is Better) -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Interruptions ↓</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
-                                    stroke-dasharray="60 377"></circle>
-                        </svg>
-                        <div class="gauge-value green">15%</div>
+                    
+                    <!-- Social Proof -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Social Proof</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                        stroke-dasharray="302 377"></circle>
+                            </svg>
+                            <div class="gauge-value green">80%</div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Appointments Made -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Appointments Made</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
-                                    stroke-dasharray="264 377"></circle>
-                        </svg>
-                        <div class="gauge-value yellow">70%</div>
+                    
+                    <!-- Benefits Aligned -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Benefits Aligned</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
+                                        stroke-dasharray="287 377"></circle>
+                            </svg>
+                            <div class="gauge-value yellow">76%</div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Conversions -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Conversions</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
-                                    stroke-dasharray="249 377"></circle>
-                        </svg>
-                        <div class="gauge-value yellow">66%</div>
-                    </div>
-                </div>
-                
-                <!-- Social Proof -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Social Proof</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
-                                    stroke-dasharray="302 377"></circle>
-                        </svg>
-                        <div class="gauge-value green">80%</div>
-                    </div>
-                </div>
-                
-                <!-- Benefits Aligned -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Benefits Aligned</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill yellow" 
-                                    stroke-dasharray="287 377"></circle>
-                        </svg>
-                        <div class="gauge-value yellow">76%</div>
-                    </div>
-                </div>
-                
-                <!-- Guided Choice -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Guided Choice</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
-                                    stroke-dasharray="309 377"></circle>
-                        </svg>
-                        <div class="gauge-value green">82%</div>
-                    </div>
-                </div>
-                
-                <!-- Patient Felt Heard -->
-                <div class="gauge-card">
-                    <div class="gauge-title">Patient Felt Heard</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
-                                    stroke-dasharray="332 377"></circle>
-                        </svg>
-                        <div class="gauge-value green">88%</div>
-                    </div>
-                </div>
-                
-                <!-- WOW Score -->
-                <div class="gauge-card">
-                    <div class="gauge-title">⭐ WOW Score</div>
-                    <div class="gauge-container">
-                        <svg class="gauge-svg">
-                            <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
-                            <circle cx="75" cy="75" r="60" class="gauge-fill green" 
-                                    stroke-dasharray="324 377"></circle>
-                        </svg>
-                        <div class="gauge-value green">86%</div>
+                    
+                    <!-- Guided Choice -->
+                    <div class="gauge-card">
+                        <div class="gauge-title">Guided Choice</div>
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle cx="75" cy="75" r="60" class="gauge-background"></circle>
+                                <circle cx="75" cy="75" r="60" class="gauge-fill green" 
+                                        stroke-dasharray="309 377"></circle>
+                            </svg>
+                            <div class="gauge-value green">82%</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -856,6 +942,39 @@
             // Animate gauge
             setTimeout(() => setGaugeValue(fillElement, value), 100);
         });
+        
+        // Toggle main section
+        function toggleSection(header) {
+            const section = header.parentElement;
+            const collapseBtn = header.querySelector('.collapse-btn');
+            const categories = section.querySelectorAll('.metrics-category');
+            
+            categories.forEach(category => {
+                const content = category.querySelector('.collapsible-content');
+                if (content.style.display === 'none') {
+                    content.style.display = '';
+                    collapseBtn.textContent = '▼';
+                } else {
+                    content.style.display = 'none';
+                    collapseBtn.textContent = '▶';
+                }
+            });
+        }
+        
+        // Toggle individual category
+        function toggleCategory(header) {
+            const category = header.parentElement;
+            const content = category.querySelector('.collapsible-content');
+            const collapseBtn = header.querySelector('.collapse-btn');
+            
+            if (content.style.display === 'none') {
+                content.style.display = '';
+                collapseBtn.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                collapseBtn.textContent = '▶';
+            }
+        }
     </script>
 </body>
 </html>
