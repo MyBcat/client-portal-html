@@ -1632,3 +1632,231 @@ body {
         width: 100%;
     }
 }
+
+/* Big Five Metrics Dashboard Styles */
+.header-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.filter-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.checkbox-label:hover {
+    color: var(--text-primary);
+}
+
+.checkbox-label input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/* Big Five Metrics Grid */
+.big-five-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.metric-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.metric-header h3 {
+    font-size: 18px;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px 8px;
+    transition: color 0.2s;
+}
+
+.expand-btn:hover {
+    color: var(--primary-color);
+}
+
+/* Time Horizons Grid */
+.time-horizons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.horizon-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.horizon-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gauge-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.gauge-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.gauge-bar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.gauge-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.gauge-fill.success {
+    background: linear-gradient(90deg, #4caf50, #45a049);
+}
+
+.gauge-fill.warning {
+    background: linear-gradient(90deg, #ff9800, #f57c00);
+}
+
+.gauge-fill.danger {
+    background: linear-gradient(90deg, #f44336, #d32f2f);
+}
+
+/* Submetrics */
+.submetrics {
+    border-top: 1px solid var(--border-color);
+    padding-top: 16px;
+    margin-top: 16px;
+}
+
+.submetric-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 14px;
+}
+
+.submetric-item:not(:last-child) {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.submetric-item span:first-child {
+    color: var(--text-secondary);
+}
+
+.submetric-item span:last-child {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.submetric-header {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* Responsive Design for Big Five Metrics */
+@media (max-width: 1400px) {
+    .big-five-metrics {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 1200px) {
+    .header-filters {
+        flex-direction: column;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .big-five-metrics {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .time-horizons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .filter-section {
+        width: 100%;
+    }
+    
+    .checkbox-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+}
