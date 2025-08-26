@@ -618,23 +618,29 @@
                     <table class="data-table">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Date/Time</th>
                                 <th>Phone Number</th>
                                 <th class="agent-column">Agent</th>
                                 <th>Duration</th>
                                 <th>Outcome</th>
                                 <th>SOP Score</th>
+                                <th>WOW Score</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="all-calls">
-                            <tr>
+                            <tr class="call-row" data-call-id="1247">
+                                <td>
+                                    <button class="expand-row-btn" onclick="toggleCallDetails(this, '1247')">▶</button>
+                                </td>
                                 <td>2025-01-11 10:45 AM</td>
                                 <td>(555) 123-4567</td>
                                 <td>Sarah Johnson</td>
                                 <td>5:23</td>
                                 <td><span class="badge success">Appointment Booked</span></td>
                                 <td><span class="score high">92%</span></td>
+                                <td><span class="score high">88%</span></td>
                                 <td>
                                     <button class="btn-icon" title="Play Recording">▶️</button>
                                     <button class="btn-icon" title="View Transcript" onclick="showTranscript('1247', 'Sarah Johnson', '2025-01-11 10:45 AM', 'Appointment Booked')">📄</button>
@@ -642,13 +648,93 @@
                                     <button class="btn-icon" title="Create Ticket" onclick="createSupportTicket('1247')">🎫</button>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="call-details-row" id="details-1247" style="display: none;">
+                                <td colspan="9">
+                                    <div class="call-details-container">
+                                        <div class="details-tabs">
+                                            <button class="tab-btn active" onclick="showCallTab(this, '1247', 'coaching')">Coaching Feedback</button>
+                                            <button class="tab-btn" onclick="showCallTab(this, '1247', 'metrics')">AI Metrics</button>
+                                            <button class="tab-btn" onclick="showCallTab(this, '1247', 'transcript')">Full Transcript</button>
+                                        </div>
+                                        <div class="tab-content" id="coaching-1247">
+                                            <div class="coaching-section">
+                                                <h4>Strengths:</h4>
+                                                <ul>
+                                                    <li>Excellent greeting and patient engagement</li>
+                                                    <li>Successfully confirmed insurance details</li>
+                                                    <li>Offered multiple appointment options</li>
+                                                </ul>
+                                            </div>
+                                            <div class="coaching-section">
+                                                <h4>Areas for Improvement:</h4>
+                                                <ul>
+                                                    <li>Could have probed more about patient's specific concerns</li>
+                                                    <li>Missed opportunity to mention new patient special</li>
+                                                </ul>
+                                            </div>
+                                            <div class="coaching-section">
+                                                <h4>Manager Notes:</h4>
+                                                <textarea class="coaching-notes" placeholder="Add coaching notes..."></textarea>
+                                                <button class="btn btn-primary" style="margin-top: 10px;">Save Notes</button>
+                                            </div>
+                                        </div>
+                                        <div class="tab-content" id="metrics-1247" style="display: none;">
+                                            <div class="metrics-grid">
+                                                <div class="metric-item">
+                                                    <span class="metric-label">Empathy Score:</span>
+                                                    <span class="metric-value high">95%</span>
+                                                </div>
+                                                <div class="metric-item">
+                                                    <span class="metric-label">Active Listening:</span>
+                                                    <span class="metric-value high">91%</span>
+                                                </div>
+                                                <div class="metric-item">
+                                                    <span class="metric-label">Problem Solving:</span>
+                                                    <span class="metric-value medium">78%</span>
+                                                </div>
+                                                <div class="metric-item">
+                                                    <span class="metric-label">Professionalism:</span>
+                                                    <span class="metric-value high">94%</span>
+                                                </div>
+                                                <div class="metric-item">
+                                                    <span class="metric-label">Clarity:</span>
+                                                    <span class="metric-value high">89%</span>
+                                                </div>
+                                                <div class="metric-item">
+                                                    <span class="metric-label">Appointment Handling:</span>
+                                                    <span class="metric-value high">92%</span>
+                                                </div>
+                                                <div class="metric-item">
+                                                    <span class="metric-label">Hold Time:</span>
+                                                    <span class="metric-value">0:45</span>
+                                                </div>
+                                                <div class="metric-item">
+                                                    <span class="metric-label">Talk Time:</span>
+                                                    <span class="metric-value">4:38</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-content" id="transcript-1247" style="display: none;">
+                                            <div class="transcript-content">
+                                                <p><strong>Agent:</strong> Good morning, Classic Vision Care, this is Sarah. How may I help you today?</p>
+                                                <p><strong>Patient:</strong> Hi, I'd like to schedule an eye exam...</p>
+                                                <p class="transcript-note">Full transcript would be loaded here...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="call-row" data-call-id="1246">
+                                <td>
+                                    <button class="expand-row-btn" onclick="toggleCallDetails(this, '1246')">▶</button>
+                                </td>
                                 <td>2025-01-11 10:32 AM</td>
                                 <td>(555) 987-6543</td>
                                 <td>Mike Chen</td>
                                 <td>3:45</td>
                                 <td><span class="badge warning">Left Voicemail</span></td>
                                 <td><span class="score medium">78%</span></td>
+                                <td><span class="score medium">75%</span></td>
                                 <td>
                                     <button class="btn-icon" title="Play Recording">▶️</button>
                                     <button class="btn-icon" title="View Transcript" onclick="showTranscript('1246', 'Mike Chen', '2025-01-11 10:32 AM', 'Left Voicemail')">📄</button>
@@ -656,18 +742,36 @@
                                     <button class="btn-icon" title="Create Ticket" onclick="createSupportTicket('1246')">🎫</button>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="call-details-row" id="details-1246" style="display: none;">
+                                <td colspan="9">
+                                    <div class="call-details-container">
+                                        <!-- Similar structure as above but with different data -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="call-row" data-call-id="1245">
+                                <td>
+                                    <button class="expand-row-btn" onclick="toggleCallDetails(this, '1245')">▶</button>
+                                </td>
                                 <td>2025-01-11 10:15 AM</td>
                                 <td>(555) 456-7890</td>
                                 <td>Emma Wilson</td>
                                 <td>7:12</td>
                                 <td><span class="badge success">Appointment Booked</span></td>
                                 <td><span class="score high">95%</span></td>
+                                <td><span class="score high">91%</span></td>
                                 <td>
                                     <button class="btn-icon" title="Play Recording">▶️</button>
                                     <button class="btn-icon" title="View Transcript" onclick="showTranscript('1245', 'Emma Wilson', '2025-01-11 10:15 AM', 'Appointment Booked')">📄</button>
                                     <button class="btn-icon" title="Download">⬇️</button>
                                     <button class="btn-icon" title="Create Ticket" onclick="createSupportTicket('1245')">🎫</button>
+                                </td>
+                            </tr>
+                            <tr class="call-details-row" id="details-1245" style="display: none;">
+                                <td colspan="9">
+                                    <div class="call-details-container">
+                                        <!-- Similar structure as above but with different data -->
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -2209,6 +2313,374 @@
                     </div>
                 </div>
             </section>
+            
+            <!-- Supervisor Reporting Tools - Only for Supervisor Role -->
+            <section id="supervisor-reports" class="content-section supervisor-only" style="display: none;">
+                <header class="section-header">
+                    <h1>Client Reporting Tools</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="openReportModal('daily')">📝 Create Daily Report</button>
+                        <button class="btn btn-primary" onclick="openReportModal('weekly')">📊 Create Weekly Report</button>
+                    </div>
+                </header>
+                
+                <!-- Report Status Dashboard -->
+                <div class="report-status-grid">
+                    <div class="status-card">
+                        <h3>Today's Reports</h3>
+                        <div class="report-list">
+                            <div class="report-item">
+                                <span class="client-name">Classic Vision Care</span>
+                                <span class="badge success">Completed</span>
+                                <span class="timestamp">10:45 AM</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="client-name">Limestone Eye Care</span>
+                                <span class="badge warning">Partially Filled</span>
+                                <span class="timestamp">In Progress</span>
+                            </div>
+                            <div class="report-item">
+                                <span class="client-name">Emerald Medical</span>
+                                <span class="badge danger">Not Started</span>
+                                <span class="timestamp">Pending</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <h3>Weekly Summary</h3>
+                        <div class="weekly-progress">
+                            <div class="progress-item">
+                                <span>Reports Completed:</span>
+                                <span class="progress-value">18/21</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 86%;"></div>
+                            </div>
+                            <p class="progress-text">86% completion rate this week</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Reports -->
+                <div class="metric-section">
+                    <h2>Recent Reports</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Submitted By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2025-01-11</td>
+                                <td>Classic Vision Care</td>
+                                <td>Daily</td>
+                                <td><span class="badge success">Sent</span></td>
+                                <td>Sarah Johnson</td>
+                                <td>
+                                    <button class="btn-icon" onclick="viewReport('RPT-001')">👁️</button>
+                                    <button class="btn-icon" onclick="editReport('RPT-001')">✏️</button>
+                                    <button class="btn-icon" onclick="resendReport('RPT-001')">📧</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2025-01-10</td>
+                                <td>Limestone Eye Care</td>
+                                <td>Weekly</td>
+                                <td><span class="badge success">Sent</span></td>
+                                <td>Mike Chen</td>
+                                <td>
+                                    <button class="btn-icon" onclick="viewReport('RPT-002')">👁️</button>
+                                    <button class="btn-icon" onclick="editReport('RPT-002')">✏️</button>
+                                    <button class="btn-icon" onclick="resendReport('RPT-002')">📧</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- MetaBase Analytics Report -->
+            <section id="metabase-report" class="content-section">
+                <header class="section-header">
+                    <h1>Performance Analytics Report</h1>
+                    <div class="header-actions">
+                        <select class="filter-select" id="client-select">
+                            <option>All Clients</option>
+                            <option>Classic Vision Care</option>
+                            <option>Limestone Eye Care</option>
+                            <option>Emerald Medical</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="exportReport()">📥 Export</button>
+                        <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh</button>
+                    </div>
+                </header>
+                
+                <!-- 13-Week Rolling Performance -->
+                <div class="metric-section">
+                    <h2>13-Week Rolling Performance</h2>
+                    <div class="performance-table-container">
+                        <table class="data-table performance-table">
+                            <thead>
+                                <tr>
+                                    <th>Week Ending</th>
+                                    <th>Calls</th>
+                                    <th>AHT</th>
+                                    <th>SOP Score</th>
+                                    <th>Quality Score</th>
+                                    <th>Appt Conv.</th>
+                                    <th>WOW Score</th>
+                                    <th>Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody id="weekly-performance">
+                                <!-- Generate 13 weeks of data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- 12-Month Performance -->
+                <div class="metric-section">
+                    <h2>12-Month Performance Trends</h2>
+                    <div class="performance-table-container">
+                        <table class="data-table performance-table">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Total Calls</th>
+                                    <th>Avg AHT</th>
+                                    <th>Avg SOP</th>
+                                    <th>Avg Quality</th>
+                                    <th>Avg Appt Conv.</th>
+                                    <th>Avg WOW</th>
+                                    <th>YoY Change</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthly-performance">
+                                <!-- Generate 12 months of data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Advanced Analytics - Custom Reports -->
+            <section id="advanced-analytics" class="content-section internal-only">
+                <header class="section-header">
+                    <h1>Advanced Analytics Builder</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="saveCustomReport()">💾 Save Report</button>
+                        <button class="btn btn-secondary" onclick="loadReport()">📂 Load Report</button>
+                    </div>
+                </header>
+                
+                <div class="analytics-builder">
+                    <div class="metrics-pool">
+                        <h3>Available Metrics</h3>
+                        <div class="draggable-metrics">
+                            <div class="metric-tile" draggable="true" data-metric="calls">📞 Call Volume</div>
+                            <div class="metric-tile" draggable="true" data-metric="aht">⏱️ Handle Time</div>
+                            <div class="metric-tile" draggable="true" data-metric="sop">📋 SOP Score</div>
+                            <div class="metric-tile" draggable="true" data-metric="quality">⭐ Quality Score</div>
+                            <div class="metric-tile" draggable="true" data-metric="appointments">📅 Appointments</div>
+                            <div class="metric-tile" draggable="true" data-metric="wow">🌟 WOW Score</div>
+                            <div class="metric-tile" draggable="true" data-metric="fcr">✅ First Call Resolution</div>
+                            <div class="metric-tile" draggable="true" data-metric="csat">😊 Customer Satisfaction</div>
+                            <div class="metric-tile" draggable="true" data-metric="hold">⏸️ Hold Time</div>
+                            <div class="metric-tile" draggable="true" data-metric="transfer">🔄 Transfer Rate</div>
+                        </div>
+                    </div>
+                    
+                    <div class="report-canvas">
+                        <h3>Report Layout</h3>
+                        <div class="drop-zones">
+                            <div class="drop-zone" id="zone-1">
+                                <p class="placeholder">Drop metrics here</p>
+                            </div>
+                            <div class="drop-zone" id="zone-2">
+                                <p class="placeholder">Drop metrics here</p>
+                            </div>
+                            <div class="drop-zone" id="zone-3">
+                                <p class="placeholder">Drop metrics here</p>
+                            </div>
+                            <div class="drop-zone" id="zone-4">
+                                <p class="placeholder">Drop metrics here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- AI Chat Interface -->
+            <section id="ai-chat" class="content-section">
+                <header class="section-header">
+                    <h1>AI Analytics Assistant</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary" onclick="clearChat()">🗑️ Clear</button>
+                    </div>
+                </header>
+                
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="chat-message assistant">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <p>Hello! I'm your AI Analytics Assistant. I can help you analyze call data and trends. Try asking me questions like:</p>
+                                <ul>
+                                    <li>"What were yesterday's main call themes?"</li>
+                                    <li>"Show me appointment booking trends this week"</li>
+                                    <li>"Which agents had the highest WOW scores today?"</li>
+                                    <li>"What are the top reasons for not booking appointments?"</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <input type="text" 
+                               id="chat-input" 
+                               class="chat-input" 
+                               placeholder="Ask me about your call data..."
+                               onkeypress="if(event.key === 'Enter') sendChatMessage()">
+                        <button class="btn btn-primary" onclick="sendChatMessage()">Send</button>
+                    </div>
+                    
+                    <div class="suggested-queries">
+                        <button class="query-chip" onclick="askQuery('Show me today\'s performance summary')">
+                            Today's Summary
+                        </button>
+                        <button class="query-chip" onclick="askQuery('What are the main customer complaints this week?')">
+                            Customer Complaints
+                        </button>
+                        <button class="query-chip" onclick="askQuery('Compare this week to last week')">
+                            Week Comparison
+                        </button>
+                        <button class="query-chip" onclick="askQuery('Which queues need attention?')">
+                            Queue Analysis
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Multi-Location Configuration (Admin Only) -->
+            <section id="multi-location" class="content-section admin-only">
+                <header class="section-header">
+                    <h1>Multi-Location Client Management</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="addLocationGroup()">➕ Add Location Group</button>
+                    </div>
+                </header>
+                
+                <div class="location-groups">
+                    <div class="location-group-card">
+                        <div class="group-header">
+                            <h3>Emerald Medical Group</h3>
+                            <span class="badge">4 Locations</span>
+                        </div>
+                        <div class="location-list">
+                            <div class="location-item">
+                                <span class="location-name">📍 Emerald Main</span>
+                                <span class="queue-id">Queue: EMR-001</span>
+                                <button class="btn-icon">⚙️</button>
+                            </div>
+                            <div class="location-item">
+                                <span class="location-name">📍 Emerald North</span>
+                                <span class="queue-id">Queue: EMR-002</span>
+                                <button class="btn-icon">⚙️</button>
+                            </div>
+                            <div class="location-item">
+                                <span class="location-name">📍 Emerald South</span>
+                                <span class="queue-id">Queue: EMR-003</span>
+                                <button class="btn-icon">⚙️</button>
+                            </div>
+                            <div class="location-item">
+                                <span class="location-name">📍 Emerald West</span>
+                                <span class="queue-id">Queue: EMR-004</span>
+                                <button class="btn-icon">⚙️</button>
+                            </div>
+                        </div>
+                        <div class="group-actions">
+                            <button class="btn btn-outline">View Consolidated Report</button>
+                            <button class="btn btn-outline">Edit Group</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Automated Reporting Configuration -->
+            <section id="automation-config" class="content-section admin-only">
+                <header class="section-header">
+                    <h1>Automated Reporting Configuration</h1>
+                </header>
+                
+                <div class="automation-grid">
+                    <div class="automation-card">
+                        <h3>Daily Client Reports</h3>
+                        <div class="automation-settings">
+                            <div class="setting-row">
+                                <label>Status:</label>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <label>Send Time:</label>
+                                <input type="time" value="17:00">
+                            </div>
+                            <div class="setting-row">
+                                <label>Include Supervisor Notes:</label>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <label>Recipients:</label>
+                                <input type="text" value="client@example.com" class="form-input">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">Save Configuration</button>
+                    </div>
+                    
+                    <div class="automation-card">
+                        <h3>Weekly Summary Reports</h3>
+                        <div class="automation-settings">
+                            <div class="setting-row">
+                                <label>Status:</label>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-row">
+                                <label>Send Day:</label>
+                                <select class="form-select">
+                                    <option>Monday</option>
+                                    <option selected>Friday</option>
+                                </select>
+                            </div>
+                            <div class="setting-row">
+                                <label>Metrics to Include:</label>
+                                <div class="checkbox-list">
+                                    <label><input type="checkbox" checked> Call Volume</label>
+                                    <label><input type="checkbox" checked> AHT</label>
+                                    <label><input type="checkbox" checked> Quality Scores</label>
+                                    <label><input type="checkbox" checked> Appointments</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">Save Configuration</button>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -2636,6 +3108,251 @@
             // This would typically make an API call to fetch filtered data
             // and update the metric values accordingly
         }
+        
+        // Toggle call details expansion
+        function toggleCallDetails(button, callId) {
+            const detailsRow = document.getElementById(`details-${callId}`);
+            if (detailsRow.style.display === 'none') {
+                detailsRow.style.display = 'table-row';
+                button.textContent = '▼';
+            } else {
+                detailsRow.style.display = 'none';
+                button.textContent = '▶';
+            }
+        }
+        
+        // Switch call detail tabs
+        function showCallTab(button, callId, tabType) {
+            // Hide all tabs for this call
+            const container = button.closest('.call-details-container');
+            container.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Remove active class from all buttons
+            container.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(`${tabType}-${callId}`).style.display = 'block';
+            button.classList.add('active');
+        }
+        
+        // Open report modal
+        function openReportModal(type) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 600px;">
+                    <h2>Create ${type === 'daily' ? 'Daily' : 'Weekly'} Report</h2>
+                    <form onsubmit="submitReport(event, '${type}')">
+                        <div class="form-group">
+                            <label>Client</label>
+                            <select class="form-input" required>
+                                <option>Classic Vision Care</option>
+                                <option>Limestone Eye Care</option>
+                                <option>Emerald Medical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Highlights</label>
+                            <textarea class="form-input" rows="3" placeholder="Enter key achievements and positive outcomes..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Opportunities</label>
+                            <textarea class="form-input" rows="3" placeholder="Enter areas for improvement..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Action Plans</label>
+                            <textarea class="form-input" rows="3" placeholder="Enter specific action items and next steps..." required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="this.closest('.modal').remove()">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Create Report</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        // Submit report
+        function submitReport(event, type) {
+            event.preventDefault();
+            alert(`${type === 'daily' ? 'Daily' : 'Weekly'} report created successfully!`);
+            event.target.closest('.modal').remove();
+        }
+        
+        // Generate weekly performance data
+        function generateWeeklyPerformance() {
+            const tbody = document.getElementById('weekly-performance');
+            if (!tbody) return;
+            
+            const weeks = [];
+            for (let i = 0; i < 13; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() - (i * 7));
+                const weekEnding = date.toISOString().split('T')[0];
+                
+                weeks.push(`
+                    <tr>
+                        <td>${weekEnding}</td>
+                        <td>${Math.floor(Math.random() * 500 + 800)}</td>
+                        <td>${Math.floor(Math.random() * 60 + 240)}s</td>
+                        <td>${Math.floor(Math.random() * 15 + 80)}%</td>
+                        <td>${Math.floor(Math.random() * 10 + 85)}%</td>
+                        <td>${Math.floor(Math.random() * 20 + 65)}%</td>
+                        <td>${Math.floor(Math.random() * 12 + 82)}%</td>
+                        <td><span class="trend ${Math.random() > 0.5 ? 'up' : 'down'}">
+                            ${Math.random() > 0.5 ? '↑' : '↓'}
+                        </span></td>
+                    </tr>
+                `);
+            }
+            tbody.innerHTML = weeks.join('');
+        }
+        
+        // Generate monthly performance data
+        function generateMonthlyPerformance() {
+            const tbody = document.getElementById('monthly-performance');
+            if (!tbody) return;
+            
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const rows = months.map(month => `
+                <tr>
+                    <td>${month} 2024</td>
+                    <td>${Math.floor(Math.random() * 2000 + 3000)}</td>
+                    <td>${Math.floor(Math.random() * 60 + 240)}s</td>
+                    <td>${Math.floor(Math.random() * 15 + 80)}%</td>
+                    <td>${Math.floor(Math.random() * 10 + 85)}%</td>
+                    <td>${Math.floor(Math.random() * 20 + 65)}%</td>
+                    <td>${Math.floor(Math.random() * 12 + 82)}%</td>
+                    <td><span class="change ${Math.random() > 0.5 ? 'positive' : 'negative'}">
+                        ${Math.random() > 0.5 ? '+' : '-'}${Math.floor(Math.random() * 10)}%
+                    </span></td>
+                </tr>
+            `);
+            tbody.innerHTML = rows.join('');
+        }
+        
+        // AI Chat functions
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            const messagesContainer = document.getElementById('chat-messages');
+            messagesContainer.innerHTML += `
+                <div class="chat-message user">
+                    <div class="message-content">
+                        <p>${message}</p>
+                    </div>
+                    <div class="message-avatar">👤</div>
+                </div>
+            `;
+            
+            // Simulate AI response
+            setTimeout(() => {
+                messagesContainer.innerHTML += `
+                    <div class="chat-message assistant">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            <p>Analyzing your query: "${message}"</p>
+                            <p>Based on the data, here are the insights...</p>
+                            <ul>
+                                <li>Call volume increased by 12% compared to last period</li>
+                                <li>Top performing agent: Sarah Johnson with 94% quality score</li>
+                                <li>Average handle time: 4:32 across all queues</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+            
+            input.value = '';
+        }
+        
+        function askQuery(query) {
+            document.getElementById('chat-input').value = query;
+            sendChatMessage();
+        }
+        
+        function clearChat() {
+            document.getElementById('chat-messages').innerHTML = `
+                <div class="chat-message assistant">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <p>Chat cleared. How can I help you analyze your call data?</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Drag and drop for custom analytics
+        let draggedElement = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize drag and drop
+            document.querySelectorAll('.metric-tile').forEach(tile => {
+                tile.addEventListener('dragstart', function(e) {
+                    draggedElement = this;
+                    this.style.opacity = '0.5';
+                });
+                
+                tile.addEventListener('dragend', function(e) {
+                    this.style.opacity = '';
+                });
+            });
+            
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '#f0f0f0';
+                });
+                
+                zone.addEventListener('dragleave', function(e) {
+                    this.style.backgroundColor = '';
+                });
+                
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '';
+                    
+                    if (draggedElement) {
+                        const metricClone = draggedElement.cloneNode(true);
+                        metricClone.classList.add('dropped');
+                        
+                        // Clear placeholder if present
+                        const placeholder = this.querySelector('.placeholder');
+                        if (placeholder) {
+                            placeholder.remove();
+                        }
+                        
+                        this.appendChild(metricClone);
+                        
+                        // Add remove button
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'remove-metric';
+                        removeBtn.textContent = '✕';
+                        removeBtn.onclick = function() {
+                            metricClone.remove();
+                            if (zone.children.length === 0) {
+                                zone.innerHTML = '<p class="placeholder">Drop metrics here</p>';
+                            }
+                        };
+                        metricClone.appendChild(removeBtn);
+                    }
+                });
+            });
+            
+            // Generate sample data on load
+            generateWeeklyPerformance();
+            generateMonthlyPerformance();
+        });
     </script>
 </body>
 </html>
